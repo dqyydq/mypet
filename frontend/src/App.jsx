@@ -1,19 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Cat from './components/Cat';
 import StatusPanel from './components/StatusPanel';
 import TrendPanel from './components/TrendPanel';
 import { useTrendingData } from './hooks/useTrendingData';
-
-const ACCENT_COLORS = {
-  excited_bouncing: '#F97316',
-  alert_ears_up: '#8B5CF6',
-  focused_working: '#10B981',
-  sleepy_yawning: '#A8A29E',
-  curious_tilting: '#3B82F6',
-  overwhelmed_dizzy: '#F59E0B',
-  content_grooming: '#D97706',
-  shocked_puffed: '#EF4444',
-};
+import { ACCENT_COLORS } from './constants';
 
 const ALL_STATES = Object.keys(ACCENT_COLORS);
 
@@ -97,6 +87,7 @@ function App() {
   const { data, loading, error } = useTrendingData();
   const [debugState, setDebugState] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const hasOpenedDrawer = useRef(false);
   const isDebug = window.location.search.includes('debug=1');
 
   const catState = isDebug && debugState
@@ -134,7 +125,6 @@ function App() {
         <p>数据来源 GitHub Trending · AI 分析 by DeepSeek</p>
       </footer>
 
-      {/* 趋势浮层 */}
       <div
         className={`trend-backdrop${drawerOpen ? ' visible' : ''}`}
         onClick={() => setDrawerOpen(false)}
@@ -146,13 +136,15 @@ function App() {
         >
           ✕
         </button>
-        <TrendPanel />
+        {hasOpenedDrawer.current && <TrendPanel />}
       </aside>
 
-      {/* 浮动触发器 */}
       <button
         className={`trend-trigger${drawerOpen ? ' hidden' : ''}`}
-        onClick={() => setDrawerOpen(true)}
+        onClick={() => {
+          hasOpenedDrawer.current = true;
+          setDrawerOpen(true);
+        }}
         title="查看历史趋势"
       >
         <span className="trend-trigger-icon">📊</span>

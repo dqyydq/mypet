@@ -8,6 +8,7 @@ export function useTrendHistory(days = 7) {
   useEffect(() => {
     let cancelled = false;
     const controller = new AbortController();
+    setLoading(true);
 
     async function fetchHistory() {
       try {

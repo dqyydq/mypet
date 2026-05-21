@@ -5,7 +5,7 @@
   gap: 12px;
 }
 
-/* 在侧边栏中时，trend-header 垂直排列更省空间 */
+/* 抽屉内 trender-header 垂直排列，宽视口时恢复水平 */
 .trend-header {
   display: flex;
   flex-direction: column;
@@ -199,7 +199,7 @@
   font-family: var(--font-num);
 }
 
-/* ===== 响应式：侧边栏叠回下方时恢复宽松样式 ===== */
+/* ===== 响应式：宽视口恢复宽松样式 ===== */
 @media (max-width: 900px) {
   .trend-panel {
     gap: 14px;

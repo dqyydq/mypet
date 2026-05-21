@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react';
+import { STATE_LABELS } from '../constants';
+import { formatStars } from '../utils/format';
 import './StatusPanel.css';
 
 const CATEGORY_LABELS = {
@@ -17,17 +19,6 @@ const CATEGORY_ICONS = {
   'Other': '📦',
 };
 
-const STATE_LABELS = {
-  excited_bouncing: '兴奋蹦跳中',
-  alert_ears_up: '警觉竖耳',
-  focused_working: '专注工作中',
-  sleepy_yawning: '困倦打哈欠',
-  curious_tilting: '好奇歪头',
-  overwhelmed_dizzy: '头晕眼花',
-  content_grooming: '满足舔爪',
-  shocked_puffed: '震惊炸毛',
-};
-
 const ERROR_MESSAGES = {
   network: '😿 猫窝信号不好，连不上服务器...待会再试试吧',
   server: '😿 服务器出故障了，本猫先打个盹...稍等片刻',
@@ -35,11 +26,6 @@ const ERROR_MESSAGES = {
   http: '😿 数据接口不太对劲，猫猫正在疑惑中',
   unknown: '😿 出了点意外状况，不过应该不是大问题',
 };
-
-function formatStars(n) {
-  if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
-  return String(n);
-}
 
 function SkeletonCat() {
   return (

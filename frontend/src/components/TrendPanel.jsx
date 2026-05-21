@@ -1,17 +1,8 @@
 import { useState } from 'react';
 import { useTrendHistory } from '../hooks/useTrendHistory';
+import { ACCENT_COLORS, STATE_LABELS_SHORT } from '../constants';
+import { formatStars } from '../utils/format';
 import './TrendPanel.css';
-
-const ACCENT_COLORS = {
-  excited_bouncing: '#F97316',
-  alert_ears_up: '#8B5CF6',
-  focused_working: '#10B981',
-  sleepy_yawning: '#A8A29E',
-  curious_tilting: '#3B82F6',
-  overwhelmed_dizzy: '#F59E0B',
-  content_grooming: '#D97706',
-  shocked_puffed: '#EF4444',
-};
 
 const CATEGORY_COLORS = {
   'AI/ML': '#F97316',
@@ -21,27 +12,11 @@ const CATEGORY_COLORS = {
   'Other': '#A8A29E',
 };
 
-const STATE_LABELS = {
-  excited_bouncing: '兴奋',
-  alert_ears_up: '警觉',
-  focused_working: '专注',
-  sleepy_yawning: '困倦',
-  curious_tilting: '好奇',
-  overwhelmed_dizzy: '头晕',
-  content_grooming: '满足',
-  shocked_puffed: '炸毛',
-};
-
 const RANGES = [7, 14, 30];
 
 function formatDate(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   return `${d.getMonth() + 1}/${d.getDate()}`;
-}
-
-function formatStars(n) {
-  if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
-  return String(n);
 }
 
 /* ===== 迷你猫头 ===== */
@@ -180,7 +155,7 @@ function DayDetail({ day, onClose }) {
           <div>
             <span className="day-detail-date">{day.date}</span>
             <span className="day-detail-state" style={{ color }}>
-              {STATE_LABELS[day.cat_state] || day.cat_state}
+              {STATE_LABELS_SHORT[day.cat_state] || day.cat_state}
             </span>
           </div>
         </div>
