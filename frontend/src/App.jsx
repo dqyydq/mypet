@@ -4,13 +4,13 @@ import StatusPanel from './components/StatusPanel';
 import { useTrendingData } from './hooks/useTrendingData';
 
 const ACCENT_COLORS = {
-  excited_bouncing: '#FF6B6B',
-  alert_ears_up: '#A78BFA',
-  focused_working: '#34D399',
-  sleepy_yawning: '#9CA3AF',
-  curious_tilting: '#60A5FA',
+  excited_bouncing: '#F97316',
+  alert_ears_up: '#8B5CF6',
+  focused_working: '#10B981',
+  sleepy_yawning: '#A8A29E',
+  curious_tilting: '#3B82F6',
   overwhelmed_dizzy: '#F59E0B',
-  content_grooming: '#FBBF24',
+  content_grooming: '#D97706',
   shocked_puffed: '#EF4444',
 };
 
@@ -22,18 +22,19 @@ function DebugStateSwitcher({ current, onChange }) {
   return (
     <div style={{
       display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center',
-      padding: 12, margin: '0 auto 16px', maxWidth: 600,
-      background: '#FFF', borderRadius: 12, boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+      padding: 10, margin: '0 auto 20px', maxWidth: 600,
+      background: '#FFF', borderRadius: 12, border: '1px solid #E7E5E4',
     }}>
       {ALL_STATES.map((s) => (
         <button
           key={s}
           onClick={() => onChange(s)}
           style={{
-            padding: '4px 12px', borderRadius: 99, border: s === current ? '2px solid #2D2D2D' : '1px solid #E5E7EB',
+            padding: '4px 10px', borderRadius: 99,
+            border: s === current ? '2px solid #1C1917' : '1px solid #E7E5E4',
             background: s === current ? ACCENT_COLORS[s] : '#FFF',
-            color: s === current ? '#FFF' : '#6B7280',
-            fontSize: 12, cursor: 'pointer', fontFamily: 'inherit',
+            color: s === current ? '#FFF' : '#78716C',
+            fontSize: 11, cursor: 'pointer', fontFamily: 'inherit',
           }}
         >
           {s.replace(/_/g, ' ')}
@@ -53,21 +54,18 @@ function App() {
     : (data?.cat_state || 'content_grooming');
 
   useEffect(() => {
-    const color = ACCENT_COLORS[catState] || '#60A5FA';
+    const color = ACCENT_COLORS[catState] || '#D97706';
     document.documentElement.style.setProperty('--accent', color);
   }, [catState]);
 
   return (
     <div className="app">
       <header className="app-header">
-        <h1 className="app-title">🐱 GitHub Trending</h1>
-        <p className="app-subtitle">喵星人日报</p>
+        <h1 className="app-title">GitHub Trending</h1>
+        <p className="app-subtitle">一只猫的每日技术观察</p>
       </header>
 
-      <DebugStateSwitcher
-        current={catState}
-        onChange={setDebugState}
-      />
+      <DebugStateSwitcher current={catState} onChange={setDebugState} />
 
       <main className="app-main">
         <div className="cat-area">

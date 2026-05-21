@@ -19,6 +19,9 @@ function Cat({ state = 'content_grooming' }) {
   const displayState = transitioning ? prevState.current : state;
   const animClass = transitioning ? 'cat-prepare' : `cat-anim-${displayState}`;
 
+  // 默认小猫可爱的肉粉色，如果外部没定义 --accent-soft 则使用此默认值
+  const defaultEarInnerColor = "FFD1D1"; 
+
   return (
     <div className={`cat-container ${animClass}`}>
       <svg viewBox="0 0 200 200" className="cat-svg" xmlns="http://www.w3.org/2000/svg">
@@ -48,26 +51,30 @@ function Cat({ state = 'content_grooming' }) {
 
           {/* ===== 耳朵组 ===== */}
           <g className="cat-ears-group">
+            {/* 左耳外廓 */}
             <polygon
               points="72,55 65,20 90,48"
               fill="#FFFDF5" stroke="#2D2D2D" strokeWidth="3"
               strokeLinejoin="round"
               className="cat-ear cat-ear-left"
             />
+            {/* 左耳内廓（类名已修复，与 CSS 完美对齐） */}
             <polygon
               points="74,52 69,27 86,48"
-              fill="var(--accent-soft)" stroke="none"
+              fill="var(--accent-soft, #FFD1D1)" stroke="none"
               className="cat-ear-inner cat-ear-inner-left"
             />
+            {/* 右耳外廓 */}
             <polygon
               points="128,55 135,20 110,48"
               fill="#FFFDF5" stroke="#2D2D2D" strokeWidth="3"
               strokeLinejoin="round"
               className="cat-ear cat-ear-right"
             />
+            {/* 右耳内廓 */}
             <polygon
               points="126,52 131,27 114,48"
-              fill="var(--accent-soft)" stroke="none"
+              fill="var(--accent-soft, #FFD1D1)" stroke="none"
               className="cat-ear-inner cat-ear-inner-right"
             />
           </g>

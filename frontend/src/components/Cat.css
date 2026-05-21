@@ -16,7 +16,7 @@
   transform: rotate(2deg) scale(1.03);
 }
 
-/* ===== 默认过渡 & 旋转原点 ===== */
+/* ===== 默认过渡 & 旋转原点 (核心修复) ===== */
 .cat-ears-group,
 .cat-head-group,
 .cat-tail-group,
@@ -25,11 +25,30 @@
   transition: transform 0.6s ease;
 }
 
-/* 统一设定旋转原点，避免在每个 keyframe 中重复 */
-.cat-tail { }
-.cat-tail-group { }
-.cat-head { }
-.cat-head-group { }
+/* 设定符合身体结构的旋转中心，防止肢体乱飞 */
+.cat-head-group {
+  transform-origin: 100px 95px; /* 脖子根部 */
+}
+
+.cat-head {
+  transform-origin: 100px 72px; /* 头部正中心 */
+}
+
+.cat-tail {
+  transform-origin: 145px 120px; /* 尾巴根部 */
+}
+
+.cat-ears-group {
+  transform-origin: 100px 55px;
+}
+
+.cat-paw-left {
+  transform-origin: 82px 145px;
+}
+
+.cat-paw-right {
+  transform-origin: 118px 145px;
+}
 
 /* ===== 状态切换预备动作 ===== */
 .cat-prepare .cat-svg {
@@ -56,7 +75,7 @@
 }
 
 .cat-anim-excited_bouncing .cat-ear-inner {
-  fill: #FFE0E0;
+  fill: #FFE0E0 !important;
 }
 
 @keyframes catBounce {
@@ -77,7 +96,7 @@
 }
 
 .cat-anim-alert_ears_up .cat-ear-inner {
-  fill: #EDE9FE;
+  fill: #EDE9FE !important;
 }
 
 .cat-anim-alert_ears_up .cat-tail {
@@ -91,7 +110,7 @@
 
 @keyframes earsUp {
   from { transform: translateY(4px) scale(1); }
-  to   { transform: translateY(-6px) scale(1.15); }
+  to   { transform: translateY(-6px) scale(1.05); }
 }
 
 @keyframes tailTwitch {
@@ -101,8 +120,8 @@
 
 @keyframes headNodAlert {
   0%, 100% { transform: rotate(0); }
-  25%  { transform: rotate(3deg); }
-  75%  { transform: rotate(-3deg); }
+  25%  { transform: rotate(4deg); }
+  75%  { transform: rotate(-4deg); }
 }
 
 /* =========================================
@@ -113,11 +132,11 @@
 }
 
 .cat-anim-focused_working .cat-paw-right {
-  animation: pawTap 0.3s ease-in-out infinite alternate;
+  animation: pawTap 0.2s ease-in-out infinite alternate;
 }
 
 .cat-anim-focused_working .cat-paw-left {
-  animation: pawTap 0.3s ease-in-out 0.1s infinite alternate;
+  animation: pawTap 0.2s ease-in-out 0.1s infinite alternate;
 }
 
 .cat-anim-focused_working .cat-tail {
@@ -125,17 +144,17 @@
 }
 
 .cat-anim-focused_working .cat-ear-inner {
-  fill: #D1FAE5;
+  fill: #D1FAE5 !important;
 }
 
 @keyframes headDown {
   from { transform: translateY(0) rotate(0); }
-  to   { transform: translateY(6px) rotate(-5deg); }
+  to   { transform: translateY(4px) rotate(-3deg); }
 }
 
 @keyframes pawTap {
   from { transform: translateY(0); }
-  to   { transform: translateY(4px); }
+  to   { transform: translateY(-6px); } /* 往上抬爪敲击 */
 }
 
 /* =========================================
@@ -160,7 +179,7 @@
 
 @keyframes yawnMouth {
   0%, 80%, 100% { d: path('M96 83 Q100 88 100 83 Q100 88 104 83'); }
-  10%, 30% { d: path('M94 83 Q100 95 100 83 Q100 95 106 83'); }
+  15%, 40% { d: path('M94 83 Q100 96 100 83 Q100 96 106 83'); }
 }
 
 @keyframes sleepyBlink {
@@ -170,19 +189,19 @@
 
 @keyframes sleepySway {
   0%, 100% { transform: rotate(0); }
-  50% { transform: rotate(4deg); }
+  50% { transform: rotate(5deg); }
 }
 
 @keyframes tailDrop {
   from { transform: rotate(0); }
-  to   { transform: rotate(10deg); }
+  to   { transform: rotate(15deg); }
 }
 
 /* =========================================
    5. curious_tilting — 均衡，歪头
    ========================================= */
 .cat-anim-curious_tilting .cat-head-group {
-  animation: headTilt 2.5s ease-in-out infinite;
+  animation: headTilt 3s ease-in-out infinite;
 }
 
 .cat-anim-curious_tilting .cat-tail {
@@ -190,9 +209,9 @@
 }
 
 @keyframes headTilt {
-  0%, 20%, 100% { transform: rotate(0); }
-  5%  { transform: rotate(28deg); }
-  60%  { transform: rotate(-25deg); }
+  0%, 100% { transform: rotate(0); }
+  25%  { transform: rotate(18deg); }
+  75%  { transform: rotate(-18deg); }
 }
 
 @keyframes tailSwaySlow {
@@ -208,27 +227,27 @@
 }
 
 .cat-anim-overwhelmed_dizzy .cat-head-group {
-  animation: dizzyHead 0.5s ease-in-out infinite alternate;
+  animation: dizzyHead 0.4s ease-in-out infinite alternate;
 }
 
 .cat-anim-overwhelmed_dizzy .cat-tail {
   stroke: #F59E0B;
-  animation: tailSpin 0.6s linear infinite;
+  animation: tailSpin 0.5s linear infinite;
 }
 
 @keyframes catWobble {
   0%, 100% { transform: rotate(0) translateX(0); }
-  25%  { transform: rotate(2deg) translateX(3px); }
-  75%  { transform: rotate(-2deg) translateX(-3px); }
+  25%  { transform: rotate(1.5deg) translateX(2px); }
+  75%  { transform: rotate(-1.5deg) translateX(-2px); }
 }
 
 @keyframes dizzyHead {
-  from { transform: rotate(6deg); }
-  to   { transform: rotate(-6deg); }
+  from { transform: rotate(5deg); }
+  to   { transform: rotate(-5deg); }
 }
 
 @keyframes tailSpin {
-  from { transform: rotate(0); }
+  from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
 
@@ -248,13 +267,13 @@
 }
 
 @keyframes groomPaw {
-  0%, 50%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-18px) translateX(4px); }
+  0%, 50%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-14px) translateX(6px) rotate(15deg); }
 }
 
 @keyframes groomHead {
-  0%, 50%, 100% { transform: translateY(0); }
-  25% { transform: translateY(3px) rotate(3deg); }
+  0%, 50%, 100% { transform: translateY(0) rotate(0); }
+  23% { transform: translateY(4px) translateX(-2px) rotate(-4deg); } /* 低头凑近爪子 */
 }
 
 @keyframes tailContent {
@@ -282,32 +301,32 @@
 
 .cat-anim-shocked_puffed .cat-eye-left ellipse:first-child,
 .cat-anim-shocked_puffed .cat-eye-right ellipse:first-child {
-  animation: shockEyes 0.5s ease forwards;
+  animation: shockEyes 0.3s ease forwards;
 }
 
 .cat-anim-shocked_puffed .cat-ear-inner {
-  fill: #FEE2E2;
+  fill: #FEE2E2 !important;
 }
 
 @keyframes catShockJump {
   from { transform: translateY(0) scale(1); }
-  to   { transform: translateY(-20px) scale(1.06); }
+  to   { transform: translateY(-20px) scale(1.04); }
 }
 
 @keyframes furPuff {
   from { rx: 50; ry: 38; }
-  to   { rx: 55; ry: 42; }
+  to   { rx: 54; ry: 41; }
 }
 
 @keyframes tailStraightUp {
   from { d: path('M145 120 Q165 110 168 90 Q170 75 160 70'); }
   to   {
-    d: path('M148 125 Q152 80 150 50 Q149 35 148 25');
-    stroke-width: 6;
+    d: path('M145 120 Q145 80 145 40 Q145 30 145 20');
+    stroke-width: 7;
   }
 }
 
 @keyframes shockEyes {
   from { rx: 7; ry: 8; }
-  to   { rx: 10; ry: 11; fill: #EF4444; }
+  to   { rx: 10; ry: 10; fill: #EF4444; }
 }

@@ -27,11 +27,16 @@ const STATE_LABELS = {
   shocked_puffed: '震惊炸毛',
 };
 
+function formatStars(n) {
+  if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+  return String(n);
+}
+
 function StatusPanel({ data, loading, error }) {
   if (loading) {
     return (
-      <div className="status-panel loading">
-        <div className="panel-card">
+      <div className="status-panel">
+        <div className="card loading-card">
           <p className="loading-text">🐾 正在窥探 GitHub...</p>
         </div>
       </div>
@@ -40,56 +45,72 @@ function StatusPanel({ data, loading, error }) {
 
   if (error) {
     return (
-      <div className="status-panel error">
-        <div className="panel-card">
-          <p>😿 网络出了点问题，猫猫正在重试...</p>
+      <div className="status-panel">
+        <div className="card loading-card">
+          <p className="loading-text">😿 网络出了点问题，猫猫正在重试...</p>
         </div>
       </div>
     );
   }
 
-  if (!data || !data.cat_state) {
-    return null;
-  }
-
-  const totalRepos = Object.values(data.categories || {}).reduce((a, b) => a + b, 0);
+  if (!data || !data.cat_state) return null;
 
   return (
     <div className="status-panel">
-      <div className="panel-card main-card">
-        <div className="state-badge">
+      {/* 猫咪叙述卡片 */}
+      <div className="card narrative-card">
+        <span className="state-badge">
           {STATE_LABELS[data.cat_state] || data.cat_state}
-        </div>
+        </span>
         <p className="narrative">{data.narrative}</p>
       </div>
 
-      <div className="categories-grid">
+      {/* 分类统计 */}
+      <div className="section-label">今日分类</div>
+      <div className="categories-row">
         {Object.entries(data.categories || {}).map(([cat, count]) => (
-          <div key={cat} className="category-card">
-            <span className="cat-icon">{CATEGORY_ICONS[cat] || '📌'}</span>
-            <span className="cat-label">{CATEGORY_LABELS[cat] || cat}</span>
-            <span className="cat-count">{count}</span>
+          <div key={cat} className="category-chip">
+            <span className="chip-icon">{CATEGORY_ICONS[cat] || '📌'}</span>
+            <span className="chip-label">{CATEGORY_LABELS[cat] || cat}</span>
+            <span className="chip-count">{count}</span>
           </div>
         ))}
       </div>
 
+      {/* 热门项目列表 */}
       {data.repos && data.repos.length > 0 && (
-        <div className="repos-list">
-          <h3 className="repos-title">🔥 今日热门项目</h3>
-          {data.repos.slice(0, 8).map((repo) => (
-            <a
-              key={repo.name}
-              href={repo.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="repo-item"
-            >
-              <span className="repo-lang">{repo.language}</span>
-              <span className="repo-name">{repo.name}</span>
-              <span className="repo-stars">⭐ {repo.stars_today}</span>
-            </a>
-          ))}
-        </div>
+        <>
+          <div className="section-label">
+            今日热门项目 · {data.repos.length} 个
+          </div>
+          <div className="repo-cards">
+            {data.repos.map((repo) => (
+              <a
+                key={repo.name}
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="repo-card"
+              >
+                <div className="repo-card-top">
+                  <span className="repo-lang">{repo.language}</span>
+                  <span className="repo-today-stars">
+                    +{formatStars(repo.stars_today)} ⭐ today
+                  </span>
+                </div>
+                <h4 className="repo-name">{repo.name}</h4>
+                {repo.description && (
+                  <p className="repo-desc">{repo.description}</p>
+                )}
+                <div className="repo-card-meta">
+                  <span className="repo-total-stars">
+                    ⭐ {formatStars(repo.total_stars)} total
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
