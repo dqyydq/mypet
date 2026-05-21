@@ -79,12 +79,27 @@ async def get_today() -> dict | None:
 
 
 async def get_history(days: int = 7) -> list[dict]:
-    """获取近 N 天的历史记录。"""
+    """获取近 N 天的历史记录，含 categories 和星数。"""
     db = await get_db()
     cursor = await db.execute(
-        "SELECT date, cat_state, narrative FROM trending_records "
+        "SELECT date, cat_state, narrative, analysis_json, raw_data "
+        "FROM trending_records "
         "ORDER BY date DESC LIMIT ?",
         (days,),
     )
     rows = await cursor.fetchall()
-    return [dict(r) for r in rows]
+    result = []
+    for row in rows:
+        d = dict(row)
+        analysis_json = d.pop("analysis_json", "{}")
+        raw_data = d.pop("raw_data", "[]")
+        if isinstance(analysis_json, str):
+            analysis = json.loads(analysis_json)
+            d["categories"] = analysis.get("categories", {})
+            d["dominant_vibe"] = analysis.get("dominant_vibe", "")
+        if isinstance(raw_data, str):
+            repos = json.loads(raw_data)
+            d["total_stars_today"] = sum(r.get("stars_today", 0) for r in repos)
+            d["repo_count"] = len(repos)
+        result.append(d)
+    return result

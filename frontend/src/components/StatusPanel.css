@@ -174,18 +174,148 @@
   font-family: var(--font-num);
 }
 
-/* ===== 加载态 ===== */
-.loading-card {
-  text-align: center;
-}
-
-.loading-text {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
 @keyframes pulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
+}
+
+/* ===== 骨架屏 ===== */
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+
+.skeleton-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerSweep 1.6s ease-in-out infinite;
+}
+
+.skeleton-svg {
+  width: 200px;
+  height: 200px;
+}
+
+.skeleton-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmerSweep {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ===== 错误卡片 ===== */
+.error-card {
+  text-align: center;
+}
+
+.error-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+/* ===== 语言过滤 ===== */
+.lang-filter-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lang-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.lang-chip:hover {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+}
+
+.lang-chip.active {
+  background: var(--accent);
+  color: #FFF;
+  border-color: var(--accent);
+}
+
+.lang-chip-count {
+  font-family: var(--font-num);
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+/* ===== 空筛选结果 ===== */
+.empty-filter {
+  text-align: center;
+  padding: 16px;
+}
+
+.empty-filter-text {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ===== 响应式：移动端 ===== */
+@media (max-width: 600px) {
+  .card {
+    padding: 14px 16px;
+  }
+
+  .narrative {
+    font-size: 0.85rem;
+  }
+
+  .repo-card {
+    padding: 12px 14px;
+  }
+
+  .repo-name {
+    font-size: 0.88rem;
+  }
+
+  .repo-desc {
+    font-size: 0.78rem;
+  }
+
+  .lang-chip {
+    padding: 5px 12px;
+    font-size: 0.72rem;
+  }
+
+  .skeleton-svg {
+    width: 150px;
+    height: 150px;
+  }
 }

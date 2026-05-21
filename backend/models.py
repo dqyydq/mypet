@@ -25,6 +25,10 @@ class HistoryRecord(BaseModel):
     date: str
     cat_state: str
     narrative: str
+    categories: dict[str, int] = {}
+    dominant_vibe: str = ""
+    total_stars_today: int = 0
+    repo_count: int = 0
 
 
 class HistoryResponse(BaseModel):

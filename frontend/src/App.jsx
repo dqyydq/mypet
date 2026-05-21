@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Cat from './components/Cat';
 import StatusPanel from './components/StatusPanel';
+import TrendPanel from './components/TrendPanel';
 import { useTrendingData } from './hooks/useTrendingData';
 
 const ACCENT_COLORS = {
@@ -126,6 +127,7 @@ function App() {
           <Cat state={catState} intensity={intensity} />
         </div>
         <StatusPanel data={data} loading={loading} error={error} />
+        <TrendPanel />
       </main>
 
       <footer className="app-footer">

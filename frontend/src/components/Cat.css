@@ -16,6 +16,13 @@
   transform: rotate(2deg) scale(1.03);
 }
 
+@media (max-width: 600px) {
+  .cat-svg {
+    width: 180px;
+    height: 180px;
+  }
+}
+
 /* ===== 基础微动画（所有状态通用，让猫有"活着"的感觉）===== */
 
 /* 呼吸感 —— 身体微微起伏 */

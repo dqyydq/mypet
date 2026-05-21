@@ -1,0 +1,224 @@
+/* ===== 面板容器 ===== */
+.trend-panel {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.trend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.trend-title {
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.trend-range-row {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 3px;
+}
+
+.range-btn {
+  padding: 4px 16px;
+  border-radius: 99px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.range-btn.active {
+  background: var(--accent);
+  color: #FFF;
+}
+
+/* ===== 猫心情时间轴 ===== */
+.mood-timeline {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.mood-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.mood-day:hover {
+  background: var(--accent-soft);
+}
+
+.mood-day.selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.mini-cat-svg {
+  width: 36px;
+  height: 32px;
+}
+
+.mood-date {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-family: var(--font-num);
+}
+
+.mood-day.selected .mood-date {
+  color: var(--accent);
+}
+
+/* ===== 图表卡片 ===== */
+.trend-chart-card {
+  padding: 20px 24px;
+}
+
+.chart-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.chart-title {
+  font-family: var(--font-title);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.chart-svg {
+  width: 100%;
+  height: auto;
+}
+
+.chart-legend-text {
+  font-size: 9px;
+  fill: var(--text-secondary);
+  font-family: var(--font-body);
+}
+
+.chart-label {
+  font-size: 8px;
+  fill: var(--text-muted);
+  font-family: var(--font-num);
+  text-anchor: middle;
+}
+
+/* ===== 日详情卡片 ===== */
+.day-detail {
+  animation: fadeInUp 0.3s ease;
+}
+
+.day-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.day-detail-mood {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.day-detail-date {
+  display: block;
+  font-family: var(--font-num);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.day-detail-state {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.day-detail-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.day-detail-close:hover {
+  background: var(--border);
+}
+
+.day-detail-narrative {
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.day-detail-cats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.day-cat-chip {
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  font-family: var(--font-num);
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 600px) {
+  .trend-chart-card {
+    padding: 14px 12px;
+  }
+
+  .mini-cat-svg {
+    width: 28px;
+    height: 24px;
+  }
+
+  .mood-date {
+    font-size: 0.58rem;
+  }
+
+  .range-btn {
+    padding: 3px 12px;
+    font-size: 0.72rem;
+  }
+
+  .trend-title {
+    font-size: 0.9rem;
+  }
+}
