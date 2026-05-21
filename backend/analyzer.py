@@ -4,6 +4,7 @@ import json
 import os
 import random
 import logging
+from copy import copy
 from dataclasses import dataclass, field
 
 from dotenv import load_dotenv
@@ -201,8 +202,7 @@ async def analyze(
 
     if MOCK_LLM:
         logger.info("Mock 模式，返回固定结果")
-        result = MOCK_RESULT
-        # Mock 模式下也用代码算 cat_state
+        result = copy(MOCK_RESULT)
         result.cat_state = determine_cat_state(result.categories, repos)
         return result
 
@@ -210,15 +210,13 @@ async def analyze(
         logger.warning("未设置有效 DEEPSEEK_API_KEY，使用 mock 结果")
         return MOCK_RESULT
 
-    # 构建 prompt：注入风格和昨日上下文
+    # 构建 prompt：注入风格和昨日上下文（用 replace 避免 narrative 含 { } 时 .format() 崩溃）
     style_hint = random.choice(STYLE_HINTS)
     style_instruction = f"叙述风格要求：{style_hint}" if style_hint else ""
     yesterday_hint = _build_yesterday_hint(yesterday_context)
 
-    system_prompt = SYSTEM_PROMPT.format(
-        style_hint=style_instruction,
-        yesterday_hint=yesterday_hint,
-    )
+    system_prompt = SYSTEM_PROMPT.replace("{style_hint}", style_instruction)
+    system_prompt = system_prompt.replace("{yesterday_hint}", yesterday_hint)
 
     user_prompt = _build_user_prompt(repos)
     logger.info(f"发送 LLM 请求，分析 {len(repos)} 个项目...")
