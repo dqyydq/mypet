@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './Cat.css';
 
 function Cat({ state = 'content_grooming' }) {
-  const [prevState, setPrevState] = useState(state);
+  const prevState = useRef(state);
   const [transitioning, setTransitioning] = useState(false);
 
   useEffect(() => {
-    if (state !== prevState) {
+    if (state !== prevState.current) {
       setTransitioning(true);
       const timer = setTimeout(() => {
-        setPrevState(state);
+        prevState.current = state;
         setTransitioning(false);
       }, 400);
       return () => clearTimeout(timer);
     }
-  }, [state, prevState]);
+  }, [state]);
 
-  const displayState = transitioning ? prevState : state;
+  const displayState = transitioning ? prevState.current : state;
   const animClass = transitioning ? 'cat-prepare' : `cat-anim-${displayState}`;
 
   return (

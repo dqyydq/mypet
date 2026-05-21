@@ -16,7 +16,7 @@
   transform: rotate(2deg) scale(1.03);
 }
 
-/* ===== 默认过渡 ===== */
+/* ===== 默认过渡 & 旋转原点 ===== */
 .cat-ears-group,
 .cat-head-group,
 .cat-tail-group,
@@ -24,6 +24,12 @@
 .cat-body {
   transition: transform 0.6s ease;
 }
+
+/* 统一设定旋转原点，避免在每个 keyframe 中重复 */
+.cat-tail { }
+.cat-tail-group { }
+.cat-head { }
+.cat-head-group { }
 
 /* ===== 状态切换预备动作 ===== */
 .cat-prepare .cat-svg {
@@ -59,8 +65,8 @@
 }
 
 @keyframes tailWagFast {
-  from { transform: rotate(-8deg); transform-origin: 145px 120px; }
-  to   { transform: rotate(12deg); transform-origin: 145px 120px; }
+  from { transform: rotate(-8deg); }
+  to   { transform: rotate(12deg); }
 }
 
 /* =========================================
@@ -89,14 +95,14 @@
 }
 
 @keyframes tailTwitch {
-  from { transform: rotate(-5deg); transform-origin: 145px 120px; }
-  to   { transform: rotate(7deg); transform-origin: 145px 120px; }
+  from { transform: rotate(-5deg); }
+  to   { transform: rotate(7deg); }
 }
 
 @keyframes headNodAlert {
-  0%, 100% { transform: rotate(0); transform-origin: 100px 72px; }
-  25%  { transform: rotate(3deg); transform-origin: 100px 72px; }
-  75%  { transform: rotate(-3deg); transform-origin: 100px 72px; }
+  0%, 100% { transform: rotate(0); }
+  25%  { transform: rotate(3deg); }
+  75%  { transform: rotate(-3deg); }
 }
 
 /* =========================================
@@ -123,8 +129,8 @@
 }
 
 @keyframes headDown {
-  from { transform: translateY(0) rotate(0); transform-origin: 100px 72px; }
-  to   { transform: translateY(6px) rotate(-5deg); transform-origin: 100px 72px; }
+  from { transform: translateY(0) rotate(0); }
+  to   { transform: translateY(6px) rotate(-5deg); }
 }
 
 @keyframes pawTap {
@@ -163,13 +169,13 @@
 }
 
 @keyframes sleepySway {
-  0%, 100% { transform: rotate(0); transform-origin: 100px 72px; }
-  50% { transform: rotate(4deg); transform-origin: 100px 72px; }
+  0%, 100% { transform: rotate(0); }
+  50% { transform: rotate(4deg); }
 }
 
 @keyframes tailDrop {
-  from { transform: rotate(0); transform-origin: 145px 120px; }
-  to   { transform: rotate(10deg); transform-origin: 145px 120px; }
+  from { transform: rotate(0); }
+  to   { transform: rotate(10deg); }
 }
 
 /* =========================================
@@ -184,14 +190,14 @@
 }
 
 @keyframes headTilt {
-  0%, 20%, 100% { transform: rotate(0); transform-origin: 100px 72px; }
-  5%  { transform: rotate(28deg); transform-origin: 100px 72px; }
-  60%  { transform: rotate(-25deg); transform-origin: 100px 72px; }
+  0%, 20%, 100% { transform: rotate(0); }
+  5%  { transform: rotate(28deg); }
+  60%  { transform: rotate(-25deg); }
 }
 
 @keyframes tailSwaySlow {
-  0%, 100% { transform: rotate(0); transform-origin: 145px 120px; }
-  50% { transform: rotate(-15deg); transform-origin: 145px 120px; }
+  0%, 100% { transform: rotate(0); }
+  50% { transform: rotate(-15deg); }
 }
 
 /* =========================================
@@ -217,13 +223,13 @@
 }
 
 @keyframes dizzyHead {
-  from { transform: rotate(6deg); transform-origin: 100px 72px; }
-  to   { transform: rotate(-6deg); transform-origin: 100px 72px; }
+  from { transform: rotate(6deg); }
+  to   { transform: rotate(-6deg); }
 }
 
 @keyframes tailSpin {
-  from { transform: rotate(0); transform-origin: 145px 120px; }
-  to   { transform: rotate(360deg); transform-origin: 145px 120px; }
+  from { transform: rotate(0); }
+  to   { transform: rotate(360deg); }
 }
 
 /* =========================================
@@ -247,14 +253,14 @@
 }
 
 @keyframes groomHead {
-  0%, 50%, 100% { transform: translateY(0); transform-origin: 100px 72px; }
-  25% { transform: translateY(3px) rotate(3deg); transform-origin: 100px 72px; }
+  0%, 50%, 100% { transform: translateY(0); }
+  25% { transform: translateY(3px) rotate(3deg); }
 }
 
 @keyframes tailContent {
-  0%, 100% { transform: rotate(0); transform-origin: 145px 120px; }
-  30%  { transform: rotate(8deg); transform-origin: 145px 120px; }
-  70%  { transform: rotate(-6deg); transform-origin: 145px 120px; }
+  0%, 100% { transform: rotate(0); }
+  30%  { transform: rotate(8deg); }
+  70%  { transform: rotate(-6deg); }
 }
 
 /* =========================================

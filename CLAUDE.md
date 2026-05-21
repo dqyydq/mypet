@@ -240,9 +240,9 @@ GET /health             → 健康检查
 - [x] Phase 3：FastAPI 接口 + SQLite 存储
 - [x] Phase 4：前端基础页面 + Cat SVG 静态版
 - [x] Phase 5：Cat 动画8种状态接入数据联动
-- [ ] Phase 6：定时任务 + 完整联调
+- [x] Phase 6：定时任务 + 完整联调
 
-**当前阶段：Phase 4**
+**当前阶段：Phase 6（全部完成）**
 每完成一个 Phase，更新上方的 checklist，并在 `docs/architecture.md` 补充该阶段的关键决策。
 
 ---

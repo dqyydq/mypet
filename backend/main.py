@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import get_db, save_today, get_today as db_get_today, get_history as db_get_history
 from scraper import scrape
 from analyzer import analyze
+from scheduler import start_scheduler, stop_scheduler
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -33,7 +34,9 @@ async def lifespan(app: FastAPI):
         """
     )
     await db.commit()
+    start_scheduler()
     yield
+    stop_scheduler()
 
 
 app = FastAPI(title="GitHub Trending Pet", version="0.1.0", lifespan=lifespan)

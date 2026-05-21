@@ -1,18 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Cat from './components/Cat';
 import StatusPanel from './components/StatusPanel';
 import { useTrendingData } from './hooks/useTrendingData';
-
-const ALL_STATES = [
-  'excited_bouncing',
-  'alert_ears_up',
-  'focused_working',
-  'sleepy_yawning',
-  'curious_tilting',
-  'overwhelmed_dizzy',
-  'content_grooming',
-  'shocked_puffed',
-];
 
 const ACCENT_COLORS = {
   excited_bouncing: '#FF6B6B',
@@ -25,7 +14,8 @@ const ACCENT_COLORS = {
   shocked_puffed: '#EF4444',
 };
 
-/** 仅开发调试用：URL 带 ?debug=1 时显示状态切换按钮 */
+const ALL_STATES = Object.keys(ACCENT_COLORS);
+
 function DebugStateSwitcher({ current, onChange }) {
   const isDebug = window.location.search.includes('debug=1');
   if (!isDebug) return null;
