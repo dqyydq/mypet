@@ -16,6 +16,38 @@
   transform: rotate(2deg) scale(1.03);
 }
 
+/* 眼睛高光跟光标平滑移动 */
+.cat-eye-left ellipse + ellipse,
+.cat-eye-right ellipse + ellipse {
+  transition: cx 0.1s ease, cy 0.1s ease;
+}
+
+/* 鼻子可点击 */
+.cat-nose {
+  cursor: pointer;
+}
+
+/* ===== 点击 boop 动画 ===== */
+.cat-boop .cat-head-group {
+  animation: boopHead 0.5s ease;
+}
+
+.cat-boop .cat-eye-left ellipse:first-child,
+.cat-boop .cat-eye-right ellipse:first-child {
+  animation: boopBlink 0.5s ease;
+}
+
+@keyframes boopHead {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes boopBlink {
+  0%, 100% { ry: 8; }
+  30% { ry: 1; }
+}
+
 @media (max-width: 600px) {
   .cat-svg {
     width: 180px;
@@ -57,10 +89,12 @@
 
 /* 耳朵偶尔自己 flick 一下（非耳朵动画的状态） */
 .cat-ear-left {
+  transform-origin: 81px 52px;
   animation: earFlickLeft 7.9s ease-in-out infinite;
 }
 
 .cat-ear-right {
+  transform-origin: 122px 52px;
   animation: earFlickRight 8.7s ease-in-out infinite;
 }
 

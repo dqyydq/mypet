@@ -1,9 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import './Cat.css';
 
 function Cat({ state = 'content_grooming', intensity = 1.0 }) {
   const prevState = useRef(state);
   const [transitioning, setTransitioning] = useState(false);
+  const svgRef = useRef(null);
+  const [pupils, setPupils] = useState({ lx: 90, ly: 68, rx: 114, ry: 68 });
+  const [booping, setBooping] = useState(false);
 
   useEffect(() => {
     if (state !== prevState.current) {
@@ -17,14 +20,55 @@ function Cat({ state = 'content_grooming', intensity = 1.0 }) {
   }, [state]);
 
   const displayState = transitioning ? prevState.current : state;
-  const animClass = transitioning ? 'cat-prepare' : `cat-anim-${displayState}`;
+  const animClass = [
+    transitioning ? 'cat-prepare' : `cat-anim-${displayState}`,
+    booping ? 'cat-boop' : '',
+  ].filter(Boolean).join(' ');
+
+  const toSvgCoords = useCallback((clientX, clientY) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return { x: 100, y: 70 };
+    return {
+      x: (clientX - rect.left) / rect.width * 200,
+      y: (clientY - rect.top) / rect.height * 200,
+    };
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    const { x, y } = toSvgCoords(e.clientX, e.clientY);
+    const move = (cx, cy, bx, by) => {
+      const dx = Math.max(-3, Math.min(3, (x - cx) * 0.1));
+      const dy = Math.max(-3, Math.min(3, (y - cy) * 0.1));
+      return { x: bx + dx, y: by + dy };
+    };
+    const left = move(88, 70, 90, 68);
+    const right = move(112, 70, 114, 68);
+    setPupils({ lx: left.x, ly: left.y, rx: right.x, ry: right.y });
+  }, [toSvgCoords]);
+
+  const handleMouseLeave = useCallback(() => {
+    setPupils({ lx: 90, ly: 68, rx: 114, ry: 68 });
+  }, []);
+
+  const handleBoop = useCallback(() => {
+    if (booping) return;
+    setBooping(true);
+    setTimeout(() => setBooping(false), 500);
+  }, [booping]);
 
   return (
     <div
       className={`cat-container ${animClass}`}
       style={{ '--intensity': intensity }}
     >
-      <svg viewBox="0 0 200 200" className="cat-svg" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        ref={svgRef}
+        viewBox="0 0 200 200"
+        className="cat-svg"
+        xmlns="http://www.w3.org/2000/svg"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
         <defs>
           <filter id="cat-shadow" x="-30%" y="-20%" width="160%" height="160%">
             <feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#00000015" />
@@ -49,38 +93,34 @@ function Cat({ state = 'content_grooming', intensity = 1.0 }) {
             className="cat-body"
           />
 
-          {/* ===== 耳朵组 ===== */}
-          <g className="cat-ears-group">
-            {/* 左耳外廓 */}
-            <polygon
-              points="72,55 65,20 90,48"
-              fill="#FFFDF5" stroke="#2D2D2D" strokeWidth="3"
-              strokeLinejoin="round"
-              className="cat-ear cat-ear-left"
-            />
-            {/* 左耳内廓（类名已修复，与 CSS 完美对齐） */}
-            <polygon
-              points="74,52 69,27 86,48"
-              fill="var(--accent-soft, #FFD1D1)" stroke="none"
-              className="cat-ear-inner cat-ear-inner-left"
-            />
-            {/* 右耳外廓 */}
-            <polygon
-              points="128,55 135,20 110,48"
-              fill="#FFFDF5" stroke="#2D2D2D" strokeWidth="3"
-              strokeLinejoin="round"
-              className="cat-ear cat-ear-right"
-            />
-            {/* 右耳内廓 */}
-            <polygon
-              points="126,52 131,27 114,48"
-              fill="var(--accent-soft, #FFD1D1)" stroke="none"
-              className="cat-ear-inner cat-ear-inner-right"
-            />
-          </g>
-
-          {/* ===== 头部组 ===== */}
+          {/* ===== 头部组（含耳朵，确保头动时耳朵跟着动）===== */}
           <g className="cat-head-group">
+            {/* 耳朵组（在 head-group 内，可被 head 动画带动，也可独立动画） */}
+            <g className="cat-ears-group">
+              <polygon
+                points="72,55 65,20 90,48"
+                fill="#FFFDF5" stroke="#2D2D2D" strokeWidth="3"
+                strokeLinejoin="round"
+                className="cat-ear cat-ear-left"
+              />
+              <polygon
+                points="74,52 69,27 86,48"
+                fill="var(--accent-soft, #FFD1D1)" stroke="none"
+                className="cat-ear-inner cat-ear-inner-left"
+              />
+              <polygon
+                points="128,55 135,20 110,48"
+                fill="#FFFDF5" stroke="#2D2D2D" strokeWidth="3"
+                strokeLinejoin="round"
+                className="cat-ear cat-ear-right"
+              />
+              <polygon
+                points="126,52 131,27 114,48"
+                fill="var(--accent-soft, #FFD1D1)" stroke="none"
+                className="cat-ear-inner cat-ear-inner-right"
+              />
+            </g>
+
             <circle
               cx="100" cy="72" r="32"
               fill="#FFFDF5" stroke="#2D2D2D" strokeWidth="3"
@@ -90,20 +130,21 @@ function Cat({ state = 'content_grooming', intensity = 1.0 }) {
             {/* 右眼 */}
             <g className="cat-eye-right">
               <ellipse cx="112" cy="70" rx="7" ry="8" fill="#2D2D2D" />
-              <ellipse cx="114" cy="68" rx="2.5" ry="3" fill="#FFFFFF" />
+              <ellipse cx={pupils.rx} cy={pupils.ry} rx="2.5" ry="3" fill="#FFFFFF" />
             </g>
 
             {/* 左眼 */}
             <g className="cat-eye-left">
               <ellipse cx="88" cy="70" rx="7" ry="8" fill="#2D2D2D" />
-              <ellipse cx="90" cy="68" rx="2.5" ry="3" fill="#FFFFFF" />
+              <ellipse cx={pupils.lx} cy={pupils.ly} rx="2.5" ry="3" fill="#FFFFFF" />
             </g>
 
-            {/* 鼻子 */}
+            {/* 鼻子（点击触发 boop） */}
             <polygon
               points="100,79 96,83 104,83"
               fill="#FF6B6B" stroke="none"
               className="cat-nose"
+              onClick={handleBoop}
             />
 
             {/* 嘴巴 */}
