@@ -16,6 +16,54 @@ const ACCENT_COLORS = {
 
 const ALL_STATES = Object.keys(ACCENT_COLORS);
 
+const INTENSITY_FLOOR = 0.3;
+const INTENSITY_CEILING = 1.5;
+const INTENSITY_DEFAULT = 0.7;
+const AI_THRESHOLD = 0.4;
+const SECURITY_THRESHOLD = 0.2;
+const DEVTOOLS_THRESHOLD = 0.3;
+const STAR_OVERWHELMED = 50000;
+const STAR_SHOCK = 10000;
+
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+function calculateIntensity(catState, categories, repos) {
+  if (!categories) return 1.0;
+  const total = Object.values(categories).reduce((s, c) => s + c, 0);
+  if (total === 0) return 1.0;
+
+  switch (catState) {
+    case 'excited_bouncing': {
+      const aiPct = (categories['AI/ML'] || 0) / total;
+      return clamp(aiPct / AI_THRESHOLD, INTENSITY_FLOOR, INTENSITY_CEILING);
+    }
+    case 'alert_ears_up': {
+      const secPct = (categories['Security'] || 0) / total;
+      return clamp(secPct / SECURITY_THRESHOLD, INTENSITY_FLOOR, INTENSITY_CEILING);
+    }
+    case 'focused_working': {
+      const devPct = (categories['DevTools'] || 0) / total;
+      return clamp(devPct / DEVTOOLS_THRESHOLD, INTENSITY_FLOOR, INTENSITY_CEILING);
+    }
+    case 'overwhelmed_dizzy': {
+      if (repos && repos.length > 0) {
+        const totalStars = repos.reduce((s, r) => s + (r.stars_today || 0), 0);
+        return clamp(totalStars / STAR_OVERWHELMED, INTENSITY_FLOOR, INTENSITY_CEILING);
+      }
+      return 0.8;
+    }
+    case 'shocked_puffed': {
+      if (repos && repos.length > 0) {
+        const maxStars = Math.max(...repos.map(r => r.stars_today || 0));
+        return clamp(maxStars / STAR_SHOCK, INTENSITY_FLOOR, INTENSITY_CEILING);
+      }
+      return 1.0;
+    }
+    default:
+      return INTENSITY_DEFAULT;
+  }
+}
+
 function DebugStateSwitcher({ current, onChange }) {
   const isDebug = window.location.search.includes('debug=1');
   if (!isDebug) return null;
@@ -53,6 +101,12 @@ function App() {
     ? debugState
     : (data?.cat_state || 'content_grooming');
 
+  const intensity = calculateIntensity(
+    catState,
+    data?.categories,
+    data?.repos,
+  );
+
   useEffect(() => {
     const color = ACCENT_COLORS[catState] || '#D97706';
     document.documentElement.style.setProperty('--accent', color);
@@ -69,7 +123,7 @@ function App() {
 
       <main className="app-main">
         <div className="cat-area">
-          <Cat state={catState} />
+          <Cat state={catState} intensity={intensity} />
         </div>
         <StatusPanel data={data} loading={loading} error={error} />
       </main>

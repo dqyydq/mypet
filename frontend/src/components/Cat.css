@@ -16,6 +16,57 @@
   transform: rotate(2deg) scale(1.03);
 }
 
+/* ===== 基础微动画（所有状态通用，让猫有"活着"的感觉）===== */
+
+/* 呼吸感 —— 身体微微起伏 */
+.cat-body {
+  animation: catBreathe 4.2s ease-in-out infinite;
+}
+
+@keyframes catBreathe {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.97); }
+}
+
+/* 慢眨眼 —— 猫的信任信号，用 ry 属性动画避免 SVG transform-origin 问题 */
+.cat-eye-left ellipse:first-child,
+.cat-eye-right ellipse:first-child {
+  animation: microBlink 5.3s ease-in-out infinite;
+}
+
+@keyframes microBlink {
+  0%, 42%, 48%, 100% { ry: 8; }
+  45% { ry: 1.5; }
+}
+
+.cat-whiskers {
+  animation: whiskerTwitch 6.7s ease-in-out infinite;
+}
+
+@keyframes whiskerTwitch {
+  0%, 36%, 40%, 100% { transform: translateY(0); }
+  38% { transform: translateY(-1.5px); }
+}
+
+/* 耳朵偶尔自己 flick 一下（非耳朵动画的状态） */
+.cat-ear-left {
+  animation: earFlickLeft 7.9s ease-in-out infinite;
+}
+
+.cat-ear-right {
+  animation: earFlickRight 8.7s ease-in-out infinite;
+}
+
+@keyframes earFlickLeft {
+  0%, 42%, 46%, 100% { transform: rotate(0); }
+  44% { transform: rotate(-7deg); }
+}
+
+@keyframes earFlickRight {
+  0%, 58%, 62%, 100% { transform: rotate(0); }
+  60% { transform: rotate(7deg); }
+}
+
 /* ===== 默认过渡 & 旋转原点 (核心修复) ===== */
 .cat-ears-group,
 .cat-head-group,
@@ -66,12 +117,12 @@
    1. excited_bouncing — AI 爆发，弹跳
    ========================================= */
 .cat-anim-excited_bouncing .cat-svg {
-  animation: catBounce 0.45s ease-in-out infinite alternate;
+  animation: catBounce calc(0.45s / var(--intensity, 1)) ease-in-out infinite alternate;
 }
 
 .cat-anim-excited_bouncing .cat-tail {
   stroke: #FF6B6B;
-  animation: tailWagFast 0.25s ease-in-out infinite alternate;
+  animation: tailWagFast calc(0.25s / var(--intensity, 1)) ease-in-out infinite alternate;
 }
 
 .cat-anim-excited_bouncing .cat-ear-inner {
@@ -95,17 +146,22 @@
   animation: earsUp 0.3s ease forwards;
 }
 
+.cat-anim-alert_ears_up .cat-ear-left,
+.cat-anim-alert_ears_up .cat-ear-right {
+  animation: none; /* 禁用通用耳朵微动，警觉时耳朵绷紧 */
+}
+
 .cat-anim-alert_ears_up .cat-ear-inner {
   fill: #EDE9FE !important;
 }
 
 .cat-anim-alert_ears_up .cat-tail {
   stroke: #A78BFA;
-  animation: tailTwitch 0.18s ease-in-out infinite alternate;
+  animation: tailTwitch calc(0.18s / var(--intensity, 1)) ease-in-out infinite alternate;
 }
 
 .cat-anim-alert_ears_up .cat-head {
-  animation: headNodAlert 1.5s ease-in-out infinite;
+  animation: headNodAlert calc(1.5s / var(--intensity, 1)) ease-in-out infinite;
 }
 
 @keyframes earsUp {
@@ -132,11 +188,11 @@
 }
 
 .cat-anim-focused_working .cat-paw-right {
-  animation: pawTap 0.2s ease-in-out infinite alternate;
+  animation: pawTap calc(0.2s / var(--intensity, 1)) ease-in-out infinite alternate;
 }
 
 .cat-anim-focused_working .cat-paw-left {
-  animation: pawTap 0.2s ease-in-out 0.1s infinite alternate;
+  animation: pawTap calc(0.2s / var(--intensity, 1)) ease-in-out 0.1s infinite alternate;
 }
 
 .cat-anim-focused_working .cat-tail {

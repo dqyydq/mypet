@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import './Cat.css';
 
-function Cat({ state = 'content_grooming' }) {
+function Cat({ state = 'content_grooming', intensity = 1.0 }) {
   const prevState = useRef(state);
   const [transitioning, setTransitioning] = useState(false);
 
@@ -19,11 +19,11 @@ function Cat({ state = 'content_grooming' }) {
   const displayState = transitioning ? prevState.current : state;
   const animClass = transitioning ? 'cat-prepare' : `cat-anim-${displayState}`;
 
-  // 默认小猫可爱的肉粉色，如果外部没定义 --accent-soft 则使用此默认值
-  const defaultEarInnerColor = "FFD1D1"; 
-
   return (
-    <div className={`cat-container ${animClass}`}>
+    <div
+      className={`cat-container ${animClass}`}
+      style={{ '--intensity': intensity }}
+    >
       <svg viewBox="0 0 200 200" className="cat-svg" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <filter id="cat-shadow" x="-30%" y="-20%" width="160%" height="160%">
