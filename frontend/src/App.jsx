@@ -96,7 +96,7 @@ function DebugStateSwitcher({ current, onChange }) {
 function App() {
   const { data, loading, error } = useTrendingData();
   const [debugState, setDebugState] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const isDebug = window.location.search.includes('debug=1');
 
   const catState = isDebug && debugState
@@ -123,31 +123,41 @@ function App() {
 
       <DebugStateSwitcher current={catState} onChange={setDebugState} />
 
-      <div className={`app-layout${sidebarOpen ? ' sidebar-open' : ''}`}>
-        <main className="app-main">
-          <div className="cat-area">
-            <Cat state={catState} intensity={intensity} />
-          </div>
-          <StatusPanel data={data} loading={loading} error={error} />
-        </main>
-        <div className="sidebar-area">
-          <button
-            className="sidebar-toggle"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            title={sidebarOpen ? '收起趋势面板' : '展开趋势面板'}
-          >
-            <span className="toggle-icon">{sidebarOpen ? '◀' : '📊'}</span>
-            <span className="toggle-label">{sidebarOpen ? '' : '趋势'}</span>
-          </button>
-          <aside className={`app-sidebar${sidebarOpen ? '' : ' collapsed'}`}>
-            <TrendPanel />
-          </aside>
+      <main className="app-main">
+        <div className="cat-area">
+          <Cat state={catState} intensity={intensity} />
         </div>
-      </div>
+        <StatusPanel data={data} loading={loading} error={error} />
+      </main>
 
       <footer className="app-footer">
         <p>数据来源 GitHub Trending · AI 分析 by DeepSeek</p>
       </footer>
+
+      {/* 趋势浮层 */}
+      <div
+        className={`trend-backdrop${drawerOpen ? ' visible' : ''}`}
+        onClick={() => setDrawerOpen(false)}
+      />
+      <aside className={`trend-drawer${drawerOpen ? ' open' : ''}`}>
+        <button
+          className="trend-drawer-close"
+          onClick={() => setDrawerOpen(false)}
+        >
+          ✕
+        </button>
+        <TrendPanel />
+      </aside>
+
+      {/* 浮动触发器 */}
+      <button
+        className={`trend-trigger${drawerOpen ? ' hidden' : ''}`}
+        onClick={() => setDrawerOpen(true)}
+        title="查看历史趋势"
+      >
+        <span className="trend-trigger-icon">📊</span>
+        <span className="trend-trigger-label">趋 势</span>
+      </button>
     </div>
   );
 }
