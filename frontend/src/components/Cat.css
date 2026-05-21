@@ -1,3 +1,4 @@
+/* ===== 容器 ===== */
 .cat-container {
   display: flex;
   justify-content: center;
@@ -8,63 +9,299 @@
 .cat-svg {
   width: 280px;
   height: 280px;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .cat-container:hover .cat-svg {
   transform: rotate(2deg) scale(1.03);
 }
 
-.cat-body,
-.cat-head,
-.cat-ear,
-.cat-tail {
-  transition: fill 0.6s ease;
+/* ===== 默认过渡 ===== */
+.cat-ears-group,
+.cat-head-group,
+.cat-tail-group,
+.cat-paws-group,
+.cat-body {
+  transition: transform 0.6s ease;
 }
 
-/* ===== 眼睛状态变体 ===== */
-.cat-eyes.eye-normal ellipse:first-of-type,
-.cat-eyes.eye-normal ellipse:nth-of-type(2) {
-  rx: 7;
-  ry: 8;
+/* ===== 状态切换预备动作 ===== */
+.cat-prepare .cat-svg {
+  animation: catPrepareJump 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.cat-eyes.eye-happy ellipse {
-  rx: 6;
-  ry: 5;
+@keyframes catPrepareJump {
+  0%   { transform: translateY(0) scale(1); }
+  30%  { transform: translateY(-12px) scale(1, 0.85); }
+  50%  { transform: translateY(-15px) scale(1.05, 0.9); }
+  100% { transform: translateY(0) scale(1); }
 }
 
-.cat-eyes.eye-wide ellipse:first-of-type,
-.cat-eyes.eye-wide ellipse:nth-of-type(2) {
-  rx: 8;
-  ry: 9;
+/* =========================================
+   1. excited_bouncing — AI 爆发，弹跳
+   ========================================= */
+.cat-anim-excited_bouncing .cat-svg {
+  animation: catBounce 0.45s ease-in-out infinite alternate;
 }
 
-.cat-eyes.eye-half ellipse:first-of-type,
-.cat-eyes.eye-half ellipse:nth-of-type(2) {
-  rx: 7;
-  ry: 4;
+.cat-anim-excited_bouncing .cat-tail {
+  stroke: #FF6B6B;
+  animation: tailWagFast 0.25s ease-in-out infinite alternate;
 }
 
-.cat-eyes.eye-narrow ellipse:first-of-type,
-.cat-eyes.eye-narrow ellipse:nth-of-type(2) {
-  rx: 5;
-  ry: 7;
+.cat-anim-excited_bouncing .cat-ear-inner {
+  fill: #FFE0E0;
 }
 
-.cat-eyes.eye-shocked ellipse:first-of-type,
-.cat-eyes.eye-shocked ellipse:nth-of-type(2) {
-  rx: 9;
-  ry: 10;
+@keyframes catBounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-14px); }
 }
 
-.cat-eyes.eye-star ellipse {
-  fill: #FBBF24;
+@keyframes tailWagFast {
+  from { transform: rotate(-8deg); transform-origin: 145px 120px; }
+  to   { transform: rotate(12deg); transform-origin: 145px 120px; }
 }
 
-.cat-eyes.eye-spiral ellipse {
-  rx: 8;
-  ry: 8;
+/* =========================================
+   2. alert_ears_up — 安全警戒，竖耳抖尾
+   ========================================= */
+.cat-anim-alert_ears_up .cat-ears-group {
+  animation: earsUp 0.3s ease forwards;
+}
+
+.cat-anim-alert_ears_up .cat-ear-inner {
+  fill: #EDE9FE;
+}
+
+.cat-anim-alert_ears_up .cat-tail {
   stroke: #A78BFA;
-  stroke-width: 1.5;
+  animation: tailTwitch 0.18s ease-in-out infinite alternate;
+}
+
+.cat-anim-alert_ears_up .cat-head {
+  animation: headNodAlert 1.5s ease-in-out infinite;
+}
+
+@keyframes earsUp {
+  from { transform: translateY(4px) scale(1); }
+  to   { transform: translateY(-6px) scale(1.15); }
+}
+
+@keyframes tailTwitch {
+  from { transform: rotate(-5deg); transform-origin: 145px 120px; }
+  to   { transform: rotate(7deg); transform-origin: 145px 120px; }
+}
+
+@keyframes headNodAlert {
+  0%, 100% { transform: rotate(0); transform-origin: 100px 72px; }
+  25%  { transform: rotate(3deg); transform-origin: 100px 72px; }
+  75%  { transform: rotate(-3deg); transform-origin: 100px 72px; }
+}
+
+/* =========================================
+   3. focused_working — 工具爆发，低头敲爪
+   ========================================= */
+.cat-anim-focused_working .cat-head-group {
+  animation: headDown 0.5s ease forwards;
+}
+
+.cat-anim-focused_working .cat-paw-right {
+  animation: pawTap 0.3s ease-in-out infinite alternate;
+}
+
+.cat-anim-focused_working .cat-paw-left {
+  animation: pawTap 0.3s ease-in-out 0.1s infinite alternate;
+}
+
+.cat-anim-focused_working .cat-tail {
+  stroke: #34D399;
+}
+
+.cat-anim-focused_working .cat-ear-inner {
+  fill: #D1FAE5;
+}
+
+@keyframes headDown {
+  from { transform: translateY(0) rotate(0); transform-origin: 100px 72px; }
+  to   { transform: translateY(6px) rotate(-5deg); transform-origin: 100px 72px; }
+}
+
+@keyframes pawTap {
+  from { transform: translateY(0); }
+  to   { transform: translateY(4px); }
+}
+
+/* =========================================
+   4. sleepy_yawning — 无聊，打哈欠
+   ========================================= */
+.cat-anim-sleepy_yawning .cat-mouth {
+  animation: yawnMouth 3s ease-in-out infinite;
+}
+
+.cat-anim-sleepy_yawning .cat-eye-left ellipse:first-child,
+.cat-anim-sleepy_yawning .cat-eye-right ellipse:first-child {
+  animation: sleepyBlink 4s ease-in-out infinite;
+}
+
+.cat-anim-sleepy_yawning .cat-head {
+  animation: sleepySway 4s ease-in-out infinite;
+}
+
+.cat-anim-sleepy_yawning .cat-tail {
+  animation: tailDrop 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes yawnMouth {
+  0%, 80%, 100% { d: path('M96 83 Q100 88 100 83 Q100 88 104 83'); }
+  10%, 30% { d: path('M94 83 Q100 95 100 83 Q100 95 106 83'); }
+}
+
+@keyframes sleepyBlink {
+  0%, 45%, 55%, 100% { ry: 8; }
+  50% { ry: 1.5; }
+}
+
+@keyframes sleepySway {
+  0%, 100% { transform: rotate(0); transform-origin: 100px 72px; }
+  50% { transform: rotate(4deg); transform-origin: 100px 72px; }
+}
+
+@keyframes tailDrop {
+  from { transform: rotate(0); transform-origin: 145px 120px; }
+  to   { transform: rotate(10deg); transform-origin: 145px 120px; }
+}
+
+/* =========================================
+   5. curious_tilting — 均衡，歪头
+   ========================================= */
+.cat-anim-curious_tilting .cat-head-group {
+  animation: headTilt 2.5s ease-in-out infinite;
+}
+
+.cat-anim-curious_tilting .cat-tail {
+  animation: tailSwaySlow 2.5s ease-in-out infinite;
+}
+
+@keyframes headTilt {
+  0%, 20%, 100% { transform: rotate(0); transform-origin: 100px 72px; }
+  5%  { transform: rotate(28deg); transform-origin: 100px 72px; }
+  60%  { transform: rotate(-25deg); transform-origin: 100px 72px; }
+}
+
+@keyframes tailSwaySlow {
+  0%, 100% { transform: rotate(0); transform-origin: 145px 120px; }
+  50% { transform: rotate(-15deg); transform-origin: 145px 120px; }
+}
+
+/* =========================================
+   6. overwhelmed_dizzy — 信息爆炸，头晕
+   ========================================= */
+.cat-anim-overwhelmed_dizzy .cat-svg {
+  animation: catWobble 0.7s ease-in-out infinite;
+}
+
+.cat-anim-overwhelmed_dizzy .cat-head-group {
+  animation: dizzyHead 0.5s ease-in-out infinite alternate;
+}
+
+.cat-anim-overwhelmed_dizzy .cat-tail {
+  stroke: #F59E0B;
+  animation: tailSpin 0.6s linear infinite;
+}
+
+@keyframes catWobble {
+  0%, 100% { transform: rotate(0) translateX(0); }
+  25%  { transform: rotate(2deg) translateX(3px); }
+  75%  { transform: rotate(-2deg) translateX(-3px); }
+}
+
+@keyframes dizzyHead {
+  from { transform: rotate(6deg); transform-origin: 100px 72px; }
+  to   { transform: rotate(-6deg); transform-origin: 100px 72px; }
+}
+
+@keyframes tailSpin {
+  from { transform: rotate(0); transform-origin: 145px 120px; }
+  to   { transform: rotate(360deg); transform-origin: 145px 120px; }
+}
+
+/* =========================================
+   7. content_grooming — 平静，舔爪子
+   ========================================= */
+.cat-anim-content_grooming .cat-paw-left {
+  animation: groomPaw 2s ease-in-out infinite;
+}
+
+.cat-anim-content_grooming .cat-head-group {
+  animation: groomHead 2s ease-in-out infinite;
+}
+
+.cat-anim-content_grooming .cat-tail {
+  animation: tailContent 2.5s ease-in-out infinite;
+}
+
+@keyframes groomPaw {
+  0%, 50%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-18px) translateX(4px); }
+}
+
+@keyframes groomHead {
+  0%, 50%, 100% { transform: translateY(0); transform-origin: 100px 72px; }
+  25% { transform: translateY(3px) rotate(3deg); transform-origin: 100px 72px; }
+}
+
+@keyframes tailContent {
+  0%, 100% { transform: rotate(0); transform-origin: 145px 120px; }
+  30%  { transform: rotate(8deg); transform-origin: 145px 120px; }
+  70%  { transform: rotate(-6deg); transform-origin: 145px 120px; }
+}
+
+/* =========================================
+   8. shocked_puffed — 震惊，炸毛跳起
+   ========================================= */
+.cat-anim-shocked_puffed .cat-svg {
+  animation: catShockJump 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) infinite alternate;
+}
+
+.cat-anim-shocked_puffed .cat-body {
+  animation: furPuff 0.3s ease forwards;
+  fill: #FFF5F5;
+}
+
+.cat-anim-shocked_puffed .cat-tail {
+  stroke: #EF4444;
+  animation: tailStraightUp 0.2s ease forwards;
+}
+
+.cat-anim-shocked_puffed .cat-eye-left ellipse:first-child,
+.cat-anim-shocked_puffed .cat-eye-right ellipse:first-child {
+  animation: shockEyes 0.5s ease forwards;
+}
+
+.cat-anim-shocked_puffed .cat-ear-inner {
+  fill: #FEE2E2;
+}
+
+@keyframes catShockJump {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(-20px) scale(1.06); }
+}
+
+@keyframes furPuff {
+  from { rx: 50; ry: 38; }
+  to   { rx: 55; ry: 42; }
+}
+
+@keyframes tailStraightUp {
+  from { d: path('M145 120 Q165 110 168 90 Q170 75 160 70'); }
+  to   {
+    d: path('M148 125 Q152 80 150 50 Q149 35 148 25');
+    stroke-width: 6;
+  }
+}
+
+@keyframes shockEyes {
+  from { rx: 7; ry: 8; }
+  to   { rx: 10; ry: 11; fill: #EF4444; }
 }

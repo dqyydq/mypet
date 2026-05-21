@@ -239,7 +239,7 @@ GET /health             → 健康检查
 - [x] Phase 2：LLM 分析器跑通，输出标准 JSON
 - [x] Phase 3：FastAPI 接口 + SQLite 存储
 - [x] Phase 4：前端基础页面 + Cat SVG 静态版
-- [ ] Phase 5：Cat 动画8种状态接入数据联动
+- [x] Phase 5：Cat 动画8种状态接入数据联动
 - [ ] Phase 6：定时任务 + 完整联调
 
 **当前阶段：Phase 4**
@@ -249,7 +249,7 @@ GET /health             → 健康检查
 
 ## Git 工作流
 
-**规则：每完成一个 Phase，必须做一次 Git 提交，不能跨 Phase 攒。**
+**规则：每完成一个 Phase，必须做一次 Git 提交，同时使用/simplify去审查代码，不能跨 Phase 攒。**
 
 ### 提交时机
 
