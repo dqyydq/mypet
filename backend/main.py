@@ -82,7 +82,9 @@ async def get_today():
             "repos": [],
         }
 
-    analysis = await analyze(repos)
+    # 获取昨日上下文，让猫的叙述有连续性
+    yesterday = await _get_yesterday_context()
+    analysis = await analyze(repos, yesterday_context=yesterday)
 
     await save_today(
         raw_data=[asdict(r) for r in repos],
@@ -105,6 +107,16 @@ async def get_history(days: int = 7):
     return {"records": records}
 
 
+async def _get_yesterday_context() -> dict | None:
+    """获取昨天的分析上下文，用于 LLM 叙述连续性。"""
+    records = await db_get_history(days=2)
+    today = DateType.today().isoformat()
+    for r in records:
+        if r.get("date") != today:
+            return r
+    return None
+
+
 @app.post("/api/refresh")
 async def refresh():
     """强制重新爬取+分析。"""
@@ -112,7 +124,8 @@ async def refresh():
     if not repos:
         return {"status": "error", "message": "爬取失败，无法刷新"}
 
-    analysis = await analyze(repos)
+    yesterday = await _get_yesterday_context()
+    analysis = await analyze(repos, yesterday_context=yesterday)
 
     await save_today(
         raw_data=[asdict(r) for r in repos],
