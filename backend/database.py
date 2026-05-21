@@ -70,8 +70,11 @@ async def get_today() -> dict | None:
         return None
     data = dict(row)
     analysis_json = data.pop("analysis_json", "{}")
+    raw_data = data.pop("raw_data", "[]")
     if isinstance(analysis_json, str):
         data["analysis"] = json.loads(analysis_json)
+    if isinstance(raw_data, str):
+        data["raw_data"] = json.loads(raw_data)
     return data
 
 

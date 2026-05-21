@@ -1,0 +1,70 @@
+.cat-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.cat-svg {
+  width: 280px;
+  height: 280px;
+  transition: transform 0.5s ease;
+}
+
+.cat-container:hover .cat-svg {
+  transform: rotate(2deg) scale(1.03);
+}
+
+.cat-body,
+.cat-head,
+.cat-ear,
+.cat-tail {
+  transition: fill 0.6s ease;
+}
+
+/* ===== 眼睛状态变体 ===== */
+.cat-eyes.eye-normal ellipse:first-of-type,
+.cat-eyes.eye-normal ellipse:nth-of-type(2) {
+  rx: 7;
+  ry: 8;
+}
+
+.cat-eyes.eye-happy ellipse {
+  rx: 6;
+  ry: 5;
+}
+
+.cat-eyes.eye-wide ellipse:first-of-type,
+.cat-eyes.eye-wide ellipse:nth-of-type(2) {
+  rx: 8;
+  ry: 9;
+}
+
+.cat-eyes.eye-half ellipse:first-of-type,
+.cat-eyes.eye-half ellipse:nth-of-type(2) {
+  rx: 7;
+  ry: 4;
+}
+
+.cat-eyes.eye-narrow ellipse:first-of-type,
+.cat-eyes.eye-narrow ellipse:nth-of-type(2) {
+  rx: 5;
+  ry: 7;
+}
+
+.cat-eyes.eye-shocked ellipse:first-of-type,
+.cat-eyes.eye-shocked ellipse:nth-of-type(2) {
+  rx: 9;
+  ry: 10;
+}
+
+.cat-eyes.eye-star ellipse {
+  fill: #FBBF24;
+}
+
+.cat-eyes.eye-spiral ellipse {
+  rx: 8;
+  ry: 8;
+  stroke: #A78BFA;
+  stroke-width: 1.5;
+}

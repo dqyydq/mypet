@@ -1,0 +1,144 @@
+.status-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.panel-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px 24px;
+}
+
+.main-card {
+  text-align: center;
+  border: 2px dashed var(--accent-soft);
+}
+
+.state-badge {
+  display: inline-block;
+  font-family: var(--font-num);
+  font-size: 1rem;
+  color: #FFFFFF;
+  background: var(--accent);
+  padding: 4px 16px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+}
+
+.narrative {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.category-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.2s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-2px);
+}
+
+.cat-icon {
+  font-size: 1.5rem;
+}
+
+.cat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.cat-count {
+  font-family: var(--font-num);
+  font-size: 1.3rem;
+  color: var(--accent);
+}
+
+.repos-list {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 20px;
+}
+
+.repos-title {
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.repo-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #F3F4F6;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.85rem;
+  transition: background 0.15s ease;
+}
+
+.repo-item:last-child {
+  border-bottom: none;
+}
+
+.repo-item:hover {
+  background: var(--accent-soft);
+  margin: 0 -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+}
+
+.repo-lang {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  min-width: 52px;
+}
+
+.repo-name {
+  flex: 1;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.repo-stars {
+  font-family: var(--font-num);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.loading-text {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}

@@ -64,7 +64,7 @@ async def get_today():
             "narrative": analysis.get("narrative", ""),
             "categories": analysis.get("categories", {}),
             "dominant_vibe": analysis.get("dominant_vibe", ""),
-            "repos": [],  # 缓存只保存分析结果，不含原始 repo 列表
+            "repos": cached.get("raw_data", []),
         }
 
     # 无缓存：爬取 + 分析 + 存储
