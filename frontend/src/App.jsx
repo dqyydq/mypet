@@ -96,6 +96,7 @@ function DebugStateSwitcher({ current, onChange }) {
 function App() {
   const { data, loading, error } = useTrendingData();
   const [debugState, setDebugState] = useState(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const isDebug = window.location.search.includes('debug=1');
 
   const catState = isDebug && debugState
@@ -122,16 +123,26 @@ function App() {
 
       <DebugStateSwitcher current={catState} onChange={setDebugState} />
 
-      <div className="app-layout">
+      <div className={`app-layout${sidebarOpen ? ' sidebar-open' : ''}`}>
         <main className="app-main">
           <div className="cat-area">
             <Cat state={catState} intensity={intensity} />
           </div>
           <StatusPanel data={data} loading={loading} error={error} />
         </main>
-        <aside className="app-sidebar">
-          <TrendPanel />
-        </aside>
+        <div className="sidebar-area">
+          <button
+            className="sidebar-toggle"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            title={sidebarOpen ? '收起趋势面板' : '展开趋势面板'}
+          >
+            <span className="toggle-icon">{sidebarOpen ? '◀' : '📊'}</span>
+            <span className="toggle-label">{sidebarOpen ? '' : '趋势'}</span>
+          </button>
+          <aside className={`app-sidebar${sidebarOpen ? '' : ' collapsed'}`}>
+            <TrendPanel />
+          </aside>
+        </div>
       </div>
 
       <footer className="app-footer">

@@ -67,9 +67,14 @@ body {
 /* ---- 两栏布局 ---- */
 .app-layout {
   display: flex;
-  gap: 28px;
+  gap: 0;
   align-items: flex-start;
   justify-content: center;
+  position: relative;
+}
+
+.app-layout.sidebar-open {
+  gap: 28px;
 }
 
 .app-main {
@@ -82,6 +87,62 @@ body {
   max-width: 600px;
 }
 
+/* ---- 侧边栏区域 ---- */
+.sidebar-area {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.sidebar-toggle {
+  position: absolute;
+  top: 0;
+  left: -8px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.35s ease;
+  white-space: nowrap;
+}
+
+.sidebar-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.toggle-icon {
+  font-size: 0.85rem;
+  transition: transform 0.35s ease;
+}
+
+.sidebar-open .toggle-icon {
+  transform: rotate(0deg);
+}
+
+.app-layout:not(.sidebar-open) .sidebar-toggle {
+  left: auto;
+  right: 0;
+  padding: 8px 12px;
+  border-radius: 12px 0 0 12px;
+  border-right: none;
+}
+
+.toggle-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* ---- 侧边栏面板 ---- */
 .app-sidebar {
   width: 320px;
   flex-shrink: 0;
@@ -91,6 +152,16 @@ body {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.35s ease,
+              padding 0.35s ease;
+}
+
+.app-sidebar.collapsed {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .cat-area {
@@ -111,17 +182,30 @@ body {
 
 /* ---- 响应式 ---- */
 @media (max-width: 900px) {
-  .app-layout {
+  .app-layout,
+  .app-layout.sidebar-open {
     flex-direction: column;
     align-items: center;
+    gap: 20px;
   }
 
-  .app-sidebar {
+  .sidebar-area {
     width: 100%;
     max-width: 600px;
+  }
+
+  .sidebar-toggle {
+    display: none;
+  }
+
+  .app-sidebar,
+  .app-sidebar.collapsed {
+    width: 100%;
+    opacity: 1;
     position: static;
     max-height: none;
     overflow-y: visible;
+    pointer-events: auto;
   }
 }
 
