@@ -1,20 +1,20 @@
 /* ===== 面板容器 ===== */
 .trend-panel {
-  margin-top: 28px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
+/* 在侧边栏中时，trend-header 垂直排列更省空间 */
 .trend-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .trend-title {
   font-family: var(--font-title);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--text);
 }
@@ -26,15 +26,16 @@
   border: 1px solid var(--border);
   border-radius: 99px;
   padding: 3px;
+  align-self: flex-start;
 }
 
 .range-btn {
-  padding: 4px 16px;
+  padding: 4px 14px;
   border-radius: 99px;
   border: none;
   background: transparent;
   color: var(--text-muted);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-family: var(--font-body);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -48,18 +49,18 @@
 /* ===== 猫心情时间轴 ===== */
 .mood-timeline {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 8px 0;
+  padding: 4px 0;
 }
 
 .mood-day {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 6px 8px;
+  gap: 2px;
+  padding: 4px 5px;
   border-radius: var(--radius-sm);
   border: 2px solid transparent;
   background: transparent;
@@ -78,12 +79,12 @@
 }
 
 .mini-cat-svg {
-  width: 36px;
-  height: 32px;
+  width: 28px;
+  height: 26px;
 }
 
 .mood-date {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   color: var(--text-muted);
   font-family: var(--font-num);
 }
@@ -94,7 +95,7 @@
 
 /* ===== 图表卡片 ===== */
 .trend-chart-card {
-  padding: 20px 24px;
+  padding: 14px 16px;
 }
 
 .chart-wrapper {
@@ -104,12 +105,12 @@
 
 .chart-title {
   font-family: var(--font-title);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .chart-svg {
@@ -118,13 +119,13 @@
 }
 
 .chart-legend-text {
-  font-size: 9px;
+  font-size: 7px;
   fill: var(--text-secondary);
   font-family: var(--font-body);
 }
 
 .chart-label {
-  font-size: 8px;
+  font-size: 7px;
   fill: var(--text-muted);
   font-family: var(--font-num);
   text-anchor: middle;
@@ -139,25 +140,25 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .day-detail-mood {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .day-detail-date {
   display: block;
   font-family: var(--font-num);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text);
 }
 
 .day-detail-state {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
   margin-top: 2px;
 }
@@ -165,7 +166,7 @@
 .day-detail-close {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--text-muted);
   cursor: pointer;
   padding: 2px 8px;
@@ -178,47 +179,89 @@
 }
 
 .day-detail-narrative {
-  font-size: 0.88rem;
-  line-height: 1.8;
+  font-size: 0.82rem;
+  line-height: 1.7;
   color: var(--text-secondary);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .day-detail-cats {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .day-cat-chip {
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 99px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   font-family: var(--font-num);
 }
 
-/* ===== 响应式 ===== */
-@media (max-width: 600px) {
-  .trend-chart-card {
-    padding: 14px 12px;
+/* ===== 响应式：侧边栏叠回下方时恢复宽松样式 ===== */
+@media (max-width: 900px) {
+  .trend-panel {
+    gap: 14px;
   }
 
-  .mini-cat-svg {
-    width: 28px;
-    height: 24px;
+  .trend-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
   }
 
-  .mood-date {
-    font-size: 0.58rem;
-  }
-
-  .range-btn {
-    padding: 3px 12px;
-    font-size: 0.72rem;
+  .trend-range-row {
+    align-self: auto;
   }
 
   .trend-title {
-    font-size: 0.9rem;
+    font-size: 1rem;
+  }
+
+  .range-btn {
+    padding: 4px 16px;
+    font-size: 0.78rem;
+  }
+
+  .mood-timeline {
+    gap: 4px;
+    padding: 8px 0;
+  }
+
+  .mood-day {
+    gap: 4px;
+    padding: 6px 8px;
+  }
+
+  .mini-cat-svg {
+    width: 36px;
+    height: 32px;
+  }
+
+  .mood-date {
+    font-size: 0.65rem;
+  }
+
+  .trend-chart-card {
+    padding: 20px 24px;
+  }
+
+  .chart-title {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+
+  .chart-legend-text {
+    font-size: 9px;
+  }
+
+  .chart-label {
+    font-size: 8px;
+  }
+
+  .day-detail-narrative {
+    font-size: 0.88rem;
+    line-height: 1.8;
   }
 }

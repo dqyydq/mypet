@@ -62,12 +62,11 @@ function MiniCatHead({ state }) {
 function CategoryChart({ records }) {
   if (!records.length) return null;
 
-  const barW = 28;
-  const gap = 12;
-  const chartW = records.length * (barW + gap) + 40;
-  const chartH = 160;
-  const legendY = 16;
-  const topPad = 30;
+  const barW = 16;
+  const gap = 6;
+  const chartW = Math.max(records.length * (barW + gap) + 40, 240);
+  const chartH = 150;
+  const topPad = 42;
 
   const categories = ['AI/ML', 'Security', 'DevTools', 'Systems', 'Other'];
 
@@ -75,12 +74,12 @@ function CategoryChart({ records }) {
     <div className="chart-wrapper">
       <h4 className="chart-title">分类分布</h4>
       <svg viewBox={`0 0 ${chartW} ${chartH}`} className="chart-svg">
-        {/* 图例 */}
-        <g transform={`translate(20, ${legendY})`}>
+        {/* 图例（紧凑双行） */}
+        <g transform="translate(20, 12)">
           {categories.map((cat, i) => (
-            <g key={cat} transform={`translate(${i * 72}, 0)`}>
-              <rect width={10} height={10} rx={2} fill={CATEGORY_COLORS[cat]} />
-              <text x={14} y={9} className="chart-legend-text">{cat}</text>
+            <g key={cat} transform={`translate(${i * 58}, 0)`}>
+              <rect width={8} height={8} rx={2} fill={CATEGORY_COLORS[cat]} />
+              <text x={12} y={8} className="chart-legend-text">{cat}</text>
             </g>
           ))}
         </g>
@@ -88,18 +87,19 @@ function CategoryChart({ records }) {
         {/* 柱子 */}
         {records.map((day, i) => {
           const total = Object.values(day.categories || {}).reduce((s, c) => s + c, 0) || 1;
-          let yOffset = topPad + 20;
+          const barBottom = chartH - 16;
+          const barTop = topPad + 4;
+          const areaH = barBottom - barTop;
+          let y = barBottom;
           const x = 20 + i * (barW + gap);
 
           return (
             <g key={day.date}>
               {categories.map((cat) => {
                 const count = day.categories?.[cat] || 0;
-                const h = Math.max(0, (count / total) * (chartH - topPad - 40));
-                const color = CATEGORY_COLORS[cat];
-                const bar = <rect key={cat} x={x} y={chartH - 20 - yOffset + topPad + 20 - h} width={barW} height={h} fill={color} rx={2} />;
-                yOffset += h;
-                return bar;
+                const h = Math.max(0, (count / total) * areaH);
+                y -= h;
+                return <rect key={cat} x={x} y={y} width={barW} height={h} fill={CATEGORY_COLORS[cat]} rx={2} />;
               })}
               <text x={x + barW / 2} y={chartH - 4} className="chart-label">{formatDate(day.date)}</text>
             </g>

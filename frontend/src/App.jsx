@@ -122,13 +122,17 @@ function App() {
 
       <DebugStateSwitcher current={catState} onChange={setDebugState} />
 
-      <main className="app-main">
-        <div className="cat-area">
-          <Cat state={catState} intensity={intensity} />
-        </div>
-        <StatusPanel data={data} loading={loading} error={error} />
-        <TrendPanel />
-      </main>
+      <div className="app-layout">
+        <main className="app-main">
+          <div className="cat-area">
+            <Cat state={catState} intensity={intensity} />
+          </div>
+          <StatusPanel data={data} loading={loading} error={error} />
+        </main>
+        <aside className="app-sidebar">
+          <TrendPanel />
+        </aside>
+      </div>
 
       <footer className="app-footer">
         <p>数据来源 GitHub Trending · AI 分析 by DeepSeek</p>

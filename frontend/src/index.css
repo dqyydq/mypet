@@ -38,7 +38,7 @@ body {
 }
 
 .app {
-  max-width: 720px;
+  max-width: 1024px;
   margin: 0 auto;
   padding: 40px 24px 80px;
 }
@@ -64,12 +64,33 @@ body {
   font-weight: 400;
 }
 
-/* ---- 主体 ---- */
+/* ---- 两栏布局 ---- */
+.app-layout {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
 .app-main {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  flex: 1;
+  min-width: 0;
+  max-width: 600px;
+}
+
+.app-sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
 .cat-area {
@@ -89,6 +110,21 @@ body {
 }
 
 /* ---- 响应式 ---- */
+@media (max-width: 900px) {
+  .app-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .app-sidebar {
+    width: 100%;
+    max-width: 600px;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
 @media (max-width: 600px) {
   .app {
     padding: 28px 16px 60px;
