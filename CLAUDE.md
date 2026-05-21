@@ -236,8 +236,8 @@ GET /health             → 健康检查
 
 - [x] Phase 0：项目结构初始化
 - [x] Phase 1：爬虫（scraper.py）跑通，能拿到原始数据
-- [ ] Phase 2：LLM 分析器跑通，输出标准 JSON
-- [ ] Phase 3：FastAPI 接口 + SQLite 存储
+- [x] Phase 2：LLM 分析器跑通，输出标准 JSON
+- [x] Phase 3：FastAPI 接口 + SQLite 存储
 - [ ] Phase 4：前端基础页面 + Cat SVG 静态版
 - [ ] Phase 5：Cat 动画8种状态接入数据联动
 - [ ] Phase 6：定时任务 + 完整联调
