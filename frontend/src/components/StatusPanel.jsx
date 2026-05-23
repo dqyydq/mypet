@@ -55,6 +55,31 @@ function ErrorCard({ error }) {
   );
 }
 
+function CategoryBars({ categories }) {
+  const total = Object.values(categories).reduce((s, v) => s + v, 0);
+  if (!total) return null;
+  return (
+    <div className="category-bars">
+      {Object.entries(categories).map(([cat, count]) => {
+        const pct = Math.round((count / total) * 100);
+        return (
+          <div key={cat} className="cat-bar-row">
+            <div className="cat-bar-meta">
+              <span className="cat-bar-icon">{CATEGORY_ICONS[cat] || '📌'}</span>
+              <span className="cat-bar-label">{CATEGORY_LABELS[cat] || cat}</span>
+              <span className="cat-bar-pct">{pct}%</span>
+              <span className="cat-bar-count">{count}</span>
+            </div>
+            <div className="cat-bar-track">
+              <div className="cat-bar-fill" style={{ width: `${pct}%` }} />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function LanguageFilter({ repos, selected, onSelect }) {
   const languages = useMemo(() => {
     const counts = new Map();
@@ -129,15 +154,7 @@ function StatusPanel({ data, loading, error }) {
 
       {/* 分类统计 */}
       <div className="section-label">今日分类</div>
-      <div className="categories-row">
-        {Object.entries(data.categories || {}).map(([cat, count]) => (
-          <div key={cat} className="category-chip">
-            <span className="chip-icon">{CATEGORY_ICONS[cat] || '📌'}</span>
-            <span className="chip-label">{CATEGORY_LABELS[cat] || cat}</span>
-            <span className="chip-count">{count}</span>
-          </div>
-        ))}
-      </div>
+      <CategoryBars categories={data.categories || {}} />
 
       {/* 热门项目列表 */}
       {data.repos && data.repos.length > 0 && (

@@ -33,3 +33,24 @@ class HistoryRecord(BaseModel):
 
 class HistoryResponse(BaseModel):
     records: list[HistoryRecord]
+
+
+class StateDistItem(BaseModel):
+    state: str
+    count: int
+
+
+class StatsRecord(BaseModel):
+    date: str
+    cat_state: str
+    total_stars_today: int
+    categories: dict[str, int] = {}
+    dominant_vibe: str = ""
+
+
+class StatsResponse(BaseModel):
+    period_days: int
+    average_categories: dict[str, float]
+    state_distribution: list[StateDistItem]
+    peak_day: dict
+    records: list[StatsRecord]

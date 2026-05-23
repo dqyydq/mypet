@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Cat from './components/Cat';
 import StatusPanel from './components/StatusPanel';
 import TrendPanel from './components/TrendPanel';
+import ShareCard from './components/ShareCard';
 import { useTrendingData } from './hooks/useTrendingData';
 import { ACCENT_COLORS } from './constants';
 
@@ -88,6 +89,7 @@ function App() {
   const [debugState, setDebugState] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const hasOpenedDrawer = useRef(false);
+  const catSvgRef = useRef(null);
   const isDebug = window.location.search.includes('debug=1');
 
   const catState = isDebug && debugState
@@ -116,8 +118,15 @@ function App() {
 
       <main className="app-main">
         <div className="cat-area">
-          <Cat state={catState} intensity={intensity} />
+          <Cat ref={catSvgRef} state={catState} intensity={intensity} />
         </div>
+        <ShareCard
+          catState={catState}
+          narrative={data?.narrative}
+          date={data?.date}
+          categories={data?.categories}
+          catSvgRef={catSvgRef}
+        />
         <StatusPanel data={data} loading={loading} error={error} />
       </main>
 

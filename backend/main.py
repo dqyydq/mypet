@@ -8,7 +8,7 @@ from datetime import date as DateType
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from database import get_db, save_today, get_today as db_get_today, get_history as db_get_history
+from database import get_db, save_today, get_today as db_get_today, get_history as db_get_history, get_stats as db_get_stats
 from scraper import scrape
 from analyzer import analyze
 from scheduler import start_scheduler, stop_scheduler
@@ -34,6 +34,8 @@ async def lifespan(app: FastAPI):
         """
     )
     await db.commit()
+    from database import run_migration
+    await run_migration(db)
     start_scheduler()
     yield
     stop_scheduler()
@@ -105,6 +107,12 @@ async def get_today():
 async def get_history(days: int = 7):
     records = await db_get_history(days)
     return {"records": records}
+
+
+@app.get("/api/stats")
+async def get_stats(days: int = 30):
+    """聚合统计：各分类均值、猫状态分布、峰值日。"""
+    return await db_get_stats(days)
 
 
 async def _get_yesterday_context() -> dict | None:

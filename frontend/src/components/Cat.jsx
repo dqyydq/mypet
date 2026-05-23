@@ -1,10 +1,15 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, forwardRef, useImperativeHandle } from 'react';
 import './Cat.css';
 
-function Cat({ state = 'content_grooming', intensity = 1.0 }) {
+const VIEWBOX_W = 200;
+const VIEWBOX_H = 165; // 裁剪底部空白，猫内容止于 y≈155
+
+const Cat = forwardRef(function Cat({ state = 'content_grooming', intensity = 1.0 }, ref) {
   const prevState = useRef(state);
   const [transitioning, setTransitioning] = useState(false);
   const svgRef = useRef(null);
+
+  useImperativeHandle(ref, () => svgRef.current, []);
   const [pupils, setPupils] = useState({ lx: 90, ly: 68, rx: 114, ry: 68 });
   const [booping, setBooping] = useState(false);
 
@@ -29,8 +34,8 @@ function Cat({ state = 'content_grooming', intensity = 1.0 }) {
     const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return { x: 100, y: 70 };
     return {
-      x: (clientX - rect.left) / rect.width * 200,
-      y: (clientY - rect.top) / rect.height * 200,
+      x: (clientX - rect.left) / rect.width * VIEWBOX_W,
+      y: (clientY - rect.top) / rect.height * VIEWBOX_H,
     };
   }, []);
 
@@ -63,7 +68,7 @@ function Cat({ state = 'content_grooming', intensity = 1.0 }) {
     >
       <svg
         ref={svgRef}
-        viewBox="0 0 200 200"
+        viewBox={`0 0 ${VIEWBOX_W} ${VIEWBOX_H}`}
         className="cat-svg"
         xmlns="http://www.w3.org/2000/svg"
         onMouseMove={handleMouseMove}
@@ -183,6 +188,6 @@ function Cat({ state = 'content_grooming', intensity = 1.0 }) {
       </svg>
     </div>
   );
-}
+});
 
 export default Cat;
